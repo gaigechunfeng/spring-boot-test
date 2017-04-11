@@ -2,9 +2,13 @@ package com.wk.boot;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.wk.boot.client.ApiRestTemplate;
+import com.wk.boot.client.Navigator;
+import com.wk.boot.client.RestClient;
 import com.wk.boot.service.IUserService;
 import com.wk.boot.web.ApiErrorPageRegistrar;
 import com.wk.boot.web.UserRealm;
+import com.wk.boot.web.filter.ApiFormFilter;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -21,6 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
+import javax.servlet.Filter;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +53,23 @@ public class ApiConfiguration {
     public ApiRestTemplate restTemplate(@Autowired RestTemplateBuilder restTemplateBuilder) {
 
         return restTemplateBuilder.build(ApiRestTemplate.class);
+    }
+
+    //    @Bean
+//    public RestClient restClient(@Autowired ApiRestTemplate apiRestTemplate) {
+//
+//        return new RestClient(apiRestTemplate);
+//    }
+
+    @Bean
+    public Navigator navigator(@Autowired ApiRestTemplate restTemplate) {
+        return Navigator.instance(restTemplate);
+    }
+
+    @Bean
+    public Navigator.WebPage defaultWebPage(@Autowired Navigator navigator) {
+
+        return navigator.defaultWebPage();
     }
 
     @Bean
@@ -82,6 +104,8 @@ public class ApiConfiguration {
 
         DefaultWebSecurityManager webSecurityManager = new DefaultWebSecurityManager();
         webSecurityManager.setRealm(userRealm);
+
+//        SecurityUtils.setSecurityManager(webSecurityManager);
         return webSecurityManager;
     }
 
@@ -95,6 +119,10 @@ public class ApiConfiguration {
         filterChainDefinitionMap.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean.setLoginUrl("/login");
+
+        Map<String, Filter> filterMap = new HashMap<>();
+        filterMap.put("authc", new ApiFormFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
 
         return shiroFilterFactoryBean;
     }

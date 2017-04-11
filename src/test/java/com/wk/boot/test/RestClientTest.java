@@ -1,5 +1,7 @@
 package com.wk.boot.test;
 
+import com.wk.boot.client.ApiRestTemplate;
+import com.wk.boot.client.Navigator;
 import com.wk.boot.client.RestClient;
 import com.wk.boot.model.User;
 import com.wk.boot.service.IUserService;
@@ -25,10 +27,10 @@ public class RestClientTest {
     private IUserService userService;
 
     @Autowired
-    private RestClient restClient;
+    private Navigator.WebPage webPage;
 
     @Test
-    public void testLogin() {
+    public void testClientWithLogin() {
 
         addUser();
 
@@ -36,40 +38,31 @@ public class RestClientTest {
         params.put("username", "gaige");
         params.put("password", "gaige");
 
-        Map<String, String> header = new HashMap<>();
-        header.put("Referer", "http://localhost:8888/api/login");
-        User user = restClient.post("http://localhost:8888/api/login", params, header, User.class);
-        System.out.println(user);
+        //login POST
+        User user = webPage.post("http://localhost:8888/api/login", params, User.class);
+        System.out.println("user::" + user);
+
+        Long id = user.getId();
+
+        //find one GET
+        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
+        System.out.println("user2::" + user);
+
+        //delete one DELETE
+        webPage.delete("http://localhost:8888/api/users/{0}", null, null, id);
+
+        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
+        System.out.println("user3::" + user);
+
+        webPage.close();
+
+        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
+        System.out.println("user4::" + user);
     }
 
     private void addUser() {
 
-        userService.save(new User("gaige","gaige","gaigechunfeng"));
+        userService.save(new User("gaige", "gaige", "gaigechunfeng"));
     }
 
-    @Test
-    public void testRestClient() {
-
-        //ADD
-        Map<String, String> newUserMap = new HashMap<>();
-        newUserMap.put("username", "321321");
-        newUserMap.put("name", "gaige");
-        User user = restClient.post("http://localhost:8888/users", newUserMap, null, User.class);
-
-        List<User> users = restClient.getForList("http://localhost:8888/users", User.class);
-        assert !Util.isEmpty(users);
-
-        //Find One
-        User user2 = restClient.get("http://localhost:8888/users/{0}", User.class, user.getId());
-
-        assert user2 != null;
-
-        //Delete
-        restClient.delete("http://localhost:8888/users/{0}", user.getId());
-
-        //Find One
-        User user3 = restClient.get("http://localhost:8888/users/{0}", User.class, user.getId());
-        assert user3 == null;
-
-    }
 }

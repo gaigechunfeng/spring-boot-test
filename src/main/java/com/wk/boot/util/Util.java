@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by gaige on 2017/4/7.
  */
-public class Util {
+public abstract class Util {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Util.class);
     private static final String PWD_ENCODING = "utf8";

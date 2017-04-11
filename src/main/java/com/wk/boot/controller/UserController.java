@@ -38,17 +38,13 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Msg delete(@PathVariable("id") Long id) {
 
-//        if (1 == 1) {
-////            throw new RuntimeException("havent found resource");
-//            return Msg.error(new RuntimeException("havent found resource"));
-//        }
         userService.removeById(id);
 
         return Msg.SUCCESS;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Msg save( User user) {
+    public Msg save(User user) {
 
         return Msg.success(userService.save(user));
     }

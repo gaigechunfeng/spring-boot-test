@@ -11,27 +11,14 @@ import org.apache.shiro.subject.PrincipalCollection;
 /**
  * Created by gaige on 2017/4/10.
  */
-//@Component
 public class UserRealm extends AuthorizingRealm {
 
     private IUserService userService;
-//    private CredentialsMatcher credentialsMatcher;
 
     public UserRealm(IUserService userService, CredentialsMatcher credentialsMatcher) {
         this.userService = userService;
         setCredentialsMatcher(credentialsMatcher);
     }
-
-//    @Override
-//    @Autowired
-//    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
-//        this.credentialsMatcher = credentialsMatcher;
-//    }
-//
-//    @Autowired
-//    public void setUserService(IUserService userService) {
-//        this.userService = userService;
-//    }
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {

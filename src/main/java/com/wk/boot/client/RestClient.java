@@ -2,9 +2,7 @@ package com.wk.boot.client;
 
 import com.wk.boot.util.Msg;
 import com.wk.boot.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
@@ -17,21 +15,14 @@ import java.util.Map;
  * Created by gaige on 2017/4/7.
  */
 
-@Component
 public class RestClient {
 
     private ApiRestTemplate apiRestTemplate;
 
-//    @Autowired
-//    public RestClient(ApiRestTemplate apiRestTemplate) {
-//        this.apiRestTemplate = apiRestTemplate;
-//    }
-
-
-    @Autowired
-    public void setApiRestTemplate(ApiRestTemplate apiRestTemplate) {
+    public RestClient(ApiRestTemplate apiRestTemplate) {
         this.apiRestTemplate = apiRestTemplate;
     }
+
 
     /**
      * POST请求
