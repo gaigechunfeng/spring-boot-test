@@ -27,12 +27,12 @@ public class RestClientTest {
 
     @Test
     public void testClientWithLogin() {
-
-        addUser();
+//
+//        addUser();
 
         Map<String, String> params = new HashMap<>();
-        params.put("username", "gaige");
-        params.put("password", "gaige");
+        params.put("username", "admin");
+        params.put("password", "admin");
 
         //login POST
         User user = webPage.post("https://localhost:8888/api/login", params, User.class);
@@ -65,7 +65,7 @@ public class RestClientTest {
 
     private void addUser() {
 
-        userService.save(new User("gaige", "gaige", "gaigechunfeng"));
+//        userService.save(new User("gaige", "gaige", "gaigechunfeng"));
     }
 
 }

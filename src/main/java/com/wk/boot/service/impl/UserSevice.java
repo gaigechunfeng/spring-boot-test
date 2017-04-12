@@ -1,6 +1,6 @@
 package com.wk.boot.service.impl;
 
-import com.wk.boot.dao.IUserRepository;
+import com.wk.boot.dao.BaseDAO;
 import com.wk.boot.model.User;
 import com.wk.boot.service.IUserService;
 import com.wk.boot.util.Util;
@@ -15,30 +15,40 @@ import java.util.List;
 @Service
 public class UserSevice implements IUserService {
 
-    private IUserRepository userRepository;
+    //    private IUserRepository userRepository;
+    private BaseDAO baseDAO;
+
+    //    @Autowired
+//    public void setUserRepository(IUserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
     @Autowired
-    public void setUserRepository(IUserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setBaseDAO(BaseDAO baseDAO) {
+        this.baseDAO = baseDAO;
     }
 
     @Override
     public List<User> listAll() {
 //        return baseDAO.listAll(User.class);
-        return (List<User>) userRepository.findAll();
+        return baseDAO.findAll(User.class);
     }
 
     @Override
-    public User save(User user) {
+    public void save(User user) {
 
-        user.setPassword(Util.md5(user.getPassword()));
-        return userRepository.save(user);
+        if (user.getId() == 0L) {
+            user.setPwd(Util.encodePwd(user.getPwd()));
+        }
+//        return userRepository.save(user);
+        baseDAO.save(user);
     }
 
     @Override
     public User findByUsername(String username) {
 
-        List<User> users = (List<User>) userRepository.findByUsername(username);
+//        List<User> users = (List<User>) userRepository.findByUsername(username);
+        List<User> users = baseDAO.find("select * from dcs_user where wid=?", User.class, username);
         if (!Util.isEmpty(users)) {
             return users.get(0);
         }
@@ -47,11 +57,13 @@ public class UserSevice implements IUserService {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findOne(id);
+//        return userRepository.findOne(id);
+        return baseDAO.findById(User.class, id);
     }
 
     @Override
     public void removeById(Long id) {
-        userRepository.delete(id);
+//        userRepository.delete(id);
+        baseDAO.deleteById(User.class, id);
     }
 }

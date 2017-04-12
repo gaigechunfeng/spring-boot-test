@@ -34,6 +34,6 @@ public class UserRealm extends AuthorizingRealm {
         if (user == null) {
             return null;
         }
-        return new SimpleAccount(username, user.getPassword(), user.getName());
+        return new SimpleAccount(username, user.getPwd(), user.getNm());
     }
 }

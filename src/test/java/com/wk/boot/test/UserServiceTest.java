@@ -21,11 +21,11 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(userService.save(new User("name" + i, "username" + i)));
-        }
-
-        System.out.println(userService.findByUsername("username5"));
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println(userService.save(new User("name" + i, "username" + i)));
+//        }
+//
+//        System.out.println(userService.findByUsername("username5"));
     }
 
 

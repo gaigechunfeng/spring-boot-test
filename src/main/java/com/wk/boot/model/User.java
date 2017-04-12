@@ -1,71 +1,105 @@
 package com.wk.boot.model;
 
-import javax.persistence.*;
+import com.wk.boot.annotation.Entity;
 
 /**
  * Created by gaige on 2017/4/7.
  */
-@Entity
-@Table(name = "user")
-public class User {
+//@Entity
+//@Table(name = "user")
+@Entity(tableName = "dcs_user")
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String username;
-    private String password;
-    private String name;
+    //    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String wid;
+    private String pwd;
+    private int pms;
+    private int et;
+    private String nm;
+    private String mb;
+    private String ap;
+    private String llt = "";
+    private String lli = "";
+    private String pet;//password expire time 密码过期时间
 
-    public User() {
+    public String getWid() {
+        return wid;
     }
 
-    public User(String name, String username) {
-        this.name = name;
-        this.username = username;
+    public void setWid(String wid) {
+        this.wid = wid;
     }
 
-    public User(String username, String password, String name) {
-        this.username = username;
-        this.password = password;
-        this.name = name;
+    public String getPwd() {
+        return pwd;
     }
 
-    public Long getId() {
-        return id;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public int getPms() {
+        return pms;
     }
 
-    public String getName() {
-        return name;
+    public void setPms(int pms) {
+        this.pms = pms;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getEt() {
+        return et;
     }
 
-    public String getUsername() {
-        return username;
+    public void setEt(int et) {
+        this.et = et;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public String getNm() {
+        return nm;
     }
 
-    public String getPassword() {
-        return password;
+    public void setNm(String nm) {
+        this.nm = nm;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getMb() {
+        return mb;
     }
 
-    @Override
-    public String toString() {
-        return new StringBuilder().append("id=").append(id).append("\n")
-                .append("name=").append(name).append("\n")
-                .append("username=").append(username).append("\n").toString();
+    public void setMb(String mb) {
+        this.mb = mb;
+    }
+
+    public String getAp() {
+        return ap;
+    }
+
+    public void setAp(String ap) {
+        this.ap = ap;
+    }
+
+    public String getLlt() {
+        return llt;
+    }
+
+    public void setLlt(String llt) {
+        this.llt = llt;
+    }
+
+    public String getLli() {
+        return lli;
+    }
+
+    public void setLli(String lli) {
+        this.lli = lli;
+    }
+
+    public String getPet() {
+        return pet;
+    }
+
+    public void setPet(String pet) {
+        this.pet = pet;
     }
 }

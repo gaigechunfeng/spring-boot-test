@@ -46,7 +46,8 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public Msg save(User user) {
 
-        return Msg.success(userService.save(user));
+        userService.save(user);
+        return Msg.success(user);
     }
 
 }

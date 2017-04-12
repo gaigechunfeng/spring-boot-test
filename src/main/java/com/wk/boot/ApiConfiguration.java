@@ -84,7 +84,7 @@ public class ApiConfiguration {
     public CredentialsMatcher credentialsMatcher() {
 
         HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        credentialsMatcher.setHashAlgorithmName("md5");
+        credentialsMatcher.setHashAlgorithmName("sha-256");
         credentialsMatcher.setHashIterations(1);
         credentialsMatcher.setStoredCredentialsHexEncoded(true);
         return credentialsMatcher;

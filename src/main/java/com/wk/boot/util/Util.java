@@ -1,5 +1,6 @@
 package com.wk.boot.util;
 
+import com.wk.boot.annotation.Entity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
@@ -27,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -197,5 +199,22 @@ public abstract class Util {
         builder.setConnectionManager(connectionManager);
 
         return builder.build();
+    }
+
+    public static boolean isStringEmpty(String tn) {
+        return tn == null || "".equals(tn.trim());
+    }
+
+    public static boolean isCollectionEmpty(Collection co) {
+        return co == null || co.size() == 0;
+    }
+
+    public static String encodePwd(String pwd) {
+        if (pwd == null) throw new NullPointerException();
+        try {
+            return org.apache.commons.codec.digest.DigestUtils.sha256Hex(pwd.getBytes(PWD_ENCODING));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("encode password error", e);
+        }
     }
 }
