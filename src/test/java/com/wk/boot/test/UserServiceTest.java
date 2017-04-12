@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gaige on 2017/4/7.
  */
@@ -21,11 +24,8 @@ public class UserServiceTest {
     @Test
     public void testSaveUser() {
 
-//        for (int i = 0; i < 10; i++) {
-//            System.out.println(userService.save(new User("name" + i, "username" + i)));
-//        }
-//
 //        System.out.println(userService.findByUsername("username5"));
+
     }
 
 

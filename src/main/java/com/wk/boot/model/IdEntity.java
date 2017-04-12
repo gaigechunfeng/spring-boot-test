@@ -6,6 +6,7 @@ package com.wk.boot.model;
 public abstract class IdEntity {
 
     private long id;
+    private String uui;
 
     public long getId() {
         return id;
@@ -13,5 +14,13 @@ public abstract class IdEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUui() {
+        return uui;
+    }
+
+    public void setUui(String uui) {
+        this.uui = uui;
     }
 }

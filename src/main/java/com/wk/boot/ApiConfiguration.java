@@ -22,6 +22,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
@@ -44,6 +46,11 @@ public class ApiConfiguration {
     @Bean
     public JdbcTemplate jdbcTemplate(@Qualifier("dataSource") DataSource dataSource) {
         return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public TransactionTemplate transactionTemplate(@Qualifier("dataSource") DataSource dataSource) {
+        return new TransactionTemplate(new DataSourceTransactionManager(dataSource));
     }
 
     @Bean

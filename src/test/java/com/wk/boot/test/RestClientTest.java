@@ -20,15 +20,13 @@ import java.util.Map;
 public class RestClientTest {
 
     @Autowired
-    private IUserService userService;
-
-    @Autowired
     private Navigator.WebPage webPage;
+
+    public RestClientTest() {
+    }
 
     @Test
     public void testClientWithLogin() {
-//
-//        addUser();
 
         Map<String, String> params = new HashMap<>();
         params.put("username", "admin");
@@ -61,11 +59,6 @@ public class RestClientTest {
         } catch (Exception e) {
             System.out.println("right here~~" + e.getMessage());
         }
-    }
-
-    private void addUser() {
-
-//        userService.save(new User("gaige", "gaige", "gaigechunfeng"));
     }
 
 }

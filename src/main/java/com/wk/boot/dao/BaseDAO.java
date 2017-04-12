@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,10 +20,24 @@ import java.util.List;
 public class BaseDAO {
 
     private JdbcTemplate jdbcTemplate;
+    private TransactionTemplate transactionTemplate;
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+        this.transactionTemplate = transactionTemplate;
+    }
+
+    /**
+     * 提供事务支持的方法
+     */
+    public <T> T execute(TransactionalCallBack<T> transactionalCallBack) {
+
+        return transactionTemplate.execute(transactionalCallBack::doInTranscation);
     }
 
     public <T> List<T> findAll(Class<T> cls) {
@@ -70,5 +87,18 @@ public class BaseDAO {
         if (r != 1) {
             throw new RuntimeException("result is not 1");
         }
+
+    }
+
+    public <T extends IdEntity> void save(Collection<T> collection) {
+
+        execute(status -> {
+            collection.forEach(this::save);
+            return null;
+        });
+    }
+
+    public static interface TransactionalCallBack<T> {
+        T doInTranscation(TransactionStatus status);
     }
 }

@@ -27,7 +27,7 @@ public class SqlUtil {
             params.add(BeanUtil.getFieldValue(t, s));
         });
         if (sb1.length() > 0) sb1.delete(0, 1);
-        if (sb2.length() > 0) sb2.delete(0, 2);
+        if (sb2.length() > 0) sb2.delete(0, 1);
 
         String tableName = getTableName(t.getClass());
         return new SqlInfo("insert into " + tableName + "(" + sb1 + ") values(" + sb2 + ")", params);

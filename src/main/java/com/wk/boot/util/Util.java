@@ -30,6 +30,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by gaige on 2017/4/7.
@@ -216,5 +217,9 @@ public abstract class Util {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("encode password error", e);
         }
+    }
+
+    public static String uuid() {
+        return UUID.randomUUID().toString();
     }
 }
