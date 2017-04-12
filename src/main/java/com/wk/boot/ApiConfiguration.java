@@ -1,14 +1,12 @@
 package com.wk.boot;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.wk.boot.client.ApiRestTemplate;
 import com.wk.boot.client.Navigator;
-import com.wk.boot.client.RestClient;
 import com.wk.boot.service.IUserService;
+import com.wk.boot.util.Util;
 import com.wk.boot.web.ApiErrorPageRegistrar;
 import com.wk.boot.web.UserRealm;
 import com.wk.boot.web.filter.ApiFormFilter;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -22,11 +20,16 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ErrorPageRegistrar;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.Filter;
 import javax.sql.DataSource;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,19 +53,13 @@ public class ApiConfiguration {
     }
 
     @Bean
-    public ApiRestTemplate restTemplate(@Autowired RestTemplateBuilder restTemplateBuilder) {
+    public RestTemplate restTemplate() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
-        return restTemplateBuilder.build(ApiRestTemplate.class);
+        return new RestTemplate(new HttpComponentsClientHttpRequestFactory(Util.acceptsUntrustedCertsHttpClient()));
     }
 
-    //    @Bean
-//    public RestClient restClient(@Autowired ApiRestTemplate apiRestTemplate) {
-//
-//        return new RestClient(apiRestTemplate);
-//    }
-
     @Bean
-    public Navigator navigator(@Autowired ApiRestTemplate restTemplate) {
+    public Navigator navigator(@Autowired RestTemplate restTemplate) {
         return Navigator.instance(restTemplate);
     }
 

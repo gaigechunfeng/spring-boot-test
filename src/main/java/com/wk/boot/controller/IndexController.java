@@ -45,4 +45,11 @@ public class IndexController {
         }
         return Msg.success(userService.findByUsername(username));
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public Msg logout() {
+
+        SecurityUtils.getSubject().logout();
+        return Msg.SUCCESS;
+    }
 }

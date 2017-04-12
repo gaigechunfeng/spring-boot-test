@@ -26,13 +26,13 @@ public class Navigator {
     private static final String DEFAULT_PAGE_NAME = "default_web_page";
     private static final Map<String, WebPage> webPageMap = new ConcurrentHashMap<>();
     private static Navigator INS;
-    private ApiRestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-    private Navigator(ApiRestTemplate restTemplate) {
+    private Navigator(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public static Navigator instance(ApiRestTemplate restTemplate) {
+    public static Navigator instance(RestTemplate restTemplate) {
 
         if (INS == null) {
             synchronized (Navigator.class) {
@@ -56,11 +56,11 @@ public class Navigator {
 
     public static class WebPage extends RestTemplate {
 
-        private ApiRestTemplate restTemplate;
-        private Map<String, List<String>> headers = new ConcurrentHashMap<>();
+        private RestTemplate restTemplate;
+//        private Map<String, List<String>> headers = new ConcurrentHashMap<>();
 
 
-        private WebPage(ApiRestTemplate restTemplate) {
+        private WebPage(RestTemplate restTemplate) {
             this.restTemplate = restTemplate;
         }
 
@@ -98,7 +98,8 @@ public class Navigator {
         public <T> T request(String url, HttpMethod method, Map<String, String> params, Class<T> cls, Object... uriVariables) {
 
             //prepare request header
-            MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>(headers);
+//            MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>(headers);
+            MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
             multiValueMap.add("Referer", url);
             applyCommonHeaders(multiValueMap);
             if (HttpMethod.POST.equals(method)) {
@@ -113,7 +114,7 @@ public class Navigator {
             ResponseEntity<Msg> responseEntity = restTemplate.execute(url, method, requestCallback, responseExtractor, uriVariables);
 
             //parse response cookie
-            parseResponseHeader(responseEntity.getHeaders());
+//            parseResponseHeader(responseEntity.getHeaders());
 
             //get msg object
             Msg msg = responseEntity.getBody();
@@ -125,16 +126,16 @@ public class Navigator {
             return msg.getObj() == null || cls == null ? null : Util.transfer((Map<String, Object>) msg.getObj(), cls);
         }
 
-        private void parseResponseHeader(HttpHeaders httpHeaders) {
-            List<String> cookies = httpHeaders.get("Set-Cookie");
-            if (!Util.isEmpty(cookies)) {
-                headers.put("Cookie", cookies);
-            }
-        }
+//        private void parseResponseHeader(HttpHeaders httpHeaders) {
+//            List<String> cookies = httpHeaders.get("Set-Cookie");
+//            if (!Util.isEmpty(cookies)) {
+//                headers.put("Cookie", cookies);
+//            }
+//        }
 
-        public void close() {
-            headers.clear();
-        }
+//        public void close() {
+//            headers.clear();
+//        }
 
     }
 

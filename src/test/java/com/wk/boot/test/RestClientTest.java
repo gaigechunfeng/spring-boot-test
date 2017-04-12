@@ -35,25 +35,32 @@ public class RestClientTest {
         params.put("password", "gaige");
 
         //login POST
-        User user = webPage.post("http://localhost:8888/api/login", params, User.class);
+        User user = webPage.post("https://localhost:8888/api/login", params, User.class);
         System.out.println("user::" + user);
 
         Long id = user.getId();
 
         //find one GET
-        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
+        user = webPage.get("https://localhost:8888/api/users/{0}", null, User.class, id);
         System.out.println("user2::" + user);
 
         //delete one DELETE
-        webPage.delete("http://localhost:8888/api/users/{0}", null, null, id);
+        webPage.delete("https://localhost:8888/api/users/{0}", null, null, id);
 
-        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
+        user = webPage.get("https://localhost:8888/api/users/{0}", null, User.class, id);
         System.out.println("user3::" + user);
 
-        webPage.close();
+        //logout POST
+        webPage.post("https://localhost:8888/api/logout", null, null);
 
-        user = webPage.get("http://localhost:8888/api/users/{0}", null, User.class, id);
-        System.out.println("user4::" + user);
+        //find One After Logout GET
+        try {
+            user = webPage.get("https://localhost:8888/api/users/{0}", null, User.class, id);
+
+            throw new RuntimeException("can not reach here~~");
+        } catch (Exception e) {
+            System.out.println("right here~~" + e.getMessage());
+        }
     }
 
     private void addUser() {

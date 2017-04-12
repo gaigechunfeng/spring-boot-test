@@ -1,13 +1,31 @@
 package com.wk.boot.util;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 
+import javax.net.ssl.SSLContext;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Collection;
 import java.util.Map;
 
@@ -154,5 +172,30 @@ public abstract class Util {
             }
         }
         return null;
+    }
+
+    public static CloseableHttpClient acceptsUntrustedCertsHttpClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        SSLContext context = SSLContextBuilder
+                .create()
+                .loadTrustMaterial(null, (x509Certificates, s) -> true)
+                .build();
+        builder.setSSLContext(context);
+
+        SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(context, NoopHostnameVerifier.INSTANCE);
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder
+                .<ConnectionSocketFactory>create()
+                .register("http", PlainConnectionSocketFactory.getSocketFactory())
+                .register("https", sslConnectionSocketFactory)
+                .build();
+
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
+        connectionManager.setMaxTotal(200);
+        connectionManager.setDefaultMaxPerRoute(100);
+
+        builder.setConnectionManager(connectionManager);
+
+        return builder.build();
     }
 }
