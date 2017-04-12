@@ -1,6 +1,6 @@
 package com.wk.boot.client;
 
-import com.wk.boot.model.User;
+import com.wk.boot.constant.Error;
 import com.wk.boot.util.Msg;
 import com.wk.boot.util.Util;
 import org.springframework.http.HttpEntity;
@@ -143,7 +143,8 @@ public class Navigator {
             throw new RestClientException("no data response");
         }
         if (!msg.isSuccess()) {
-            throw new RestClientException(msg.getErrmsg());
+            Error error = Util.findEnumByName(Error.class, msg.getErrmsg());
+            throw new RestClientException(error == null ? msg.getErrmsg() : error.getErrMsg());
         }
         if (cls != null && msg.getObj() != null && !(cls.isAssignableFrom(msg.getObj().getClass()))) {
             throw new RestClientException("response data is not a {" + cls + "}");

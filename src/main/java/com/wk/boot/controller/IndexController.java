@@ -1,5 +1,6 @@
 package com.wk.boot.controller;
 
+import com.wk.boot.constant.Error;
 import com.wk.boot.service.IUserService;
 import com.wk.boot.util.Msg;
 import org.apache.shiro.SecurityUtils;
@@ -24,21 +25,24 @@ public class IndexController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login")
     public Msg login(HttpServletRequest request) {
 
         Object loginExceptionName = request.getAttribute("shiroLoginFailure");
         if (loginExceptionName != null) {
             switch (loginExceptionName.toString()) {
                 case "org.apache.shiro.authc.IncorrectCredentialsException":
-                    throw new AuthenticationException("密码错误");
+                    throw new AuthenticationException(Error.PASSWORD_ERROR.name());
                 case "org.apache.shiro.authc.UnknownAccountException":
-                    throw new AuthenticationException("不存在该用户");
+                    throw new AuthenticationException(Error.UNKNOW_ACCOUNT.name());
                 default:
-                    throw new AuthenticationException("登录错误");
+                    throw new AuthenticationException(Error.LOGIN_ERROR.name());
             }
         }
         String username = (String) SecurityUtils.getSubject().getPrincipal();
+        if (username == null) {
+            throw new AuthenticationException(Error.NO_LOGIN.name());
+        }
         return Msg.success(userService.findByUsername(username));
     }
 }

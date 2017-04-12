@@ -1,4 +1,4 @@
-package com.wk.boot.util;
+package com.wk.boot.constant;
 
 /**
  * Created by gaige on 2017/4/11.

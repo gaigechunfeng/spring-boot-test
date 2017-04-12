@@ -144,4 +144,15 @@ public abstract class Util {
             throw new RuntimeException("md5 error", e);
         }
     }
+
+    public static <T extends Enum> T findEnumByName(Class<T> cls, String name) {
+
+        T[] ts = cls.getEnumConstants();
+        for (T t : ts) {
+            if (t.name().equals(name)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }
