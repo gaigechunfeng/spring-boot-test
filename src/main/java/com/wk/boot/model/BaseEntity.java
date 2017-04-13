@@ -5,33 +5,33 @@ package com.wk.boot.model;
  */
 public abstract class BaseEntity extends IdEntity {
 
-    //whether deleted,ÊÇ·ñÒÑÉ¾³ı
+    //whether deleted,æ˜¯å¦å·²åˆ é™¤
     private boolean wde;
-    //whether offline,ÊÇ·ñÀëÏß°æ±¾
+    //whether offline,æ˜¯å¦ç¦»çº¿ç‰ˆæœ¬
     private boolean wof;
-    //whether synchronized to center,ÊÇ·ñÒÑÍ¬²½µ½ÖĞĞÄ
+    //whether synchronized to center,æ˜¯å¦å·²åŒæ­¥åˆ°ä¸­å¿ƒ
     private boolean wsc;
-    //online version,ÔÚÏß°æ±¾ĞòºÅ
+    //online version,åœ¨çº¿ç‰ˆæœ¬åºå·
     private long olv;
-    //offline version,ÀëÏß°æ±¾ĞòºÅ
+    //offline version,ç¦»çº¿ç‰ˆæœ¬åºå·
     private long ofv;
-    //site clock difference,ÖĞĞÄÊ±ÖÓÏà¶ÔÍâÕ¾Ê±ÖÓµÄÊ±¼ä²î£¬ºÁÃëÖµ
+    //site clock difference,ä¸­å¿ƒæ—¶é’Ÿç›¸å¯¹å¤–ç«™æ—¶é’Ÿçš„æ—¶é—´å·®ï¼Œæ¯«ç§’å€¼
     private long scd;
-    //site three code,Êı¾İËùÊôÍâÕ¾Ó¦ÓÃÎ¨Ò»±êÊ¶,Í¨ÓÃÊı¾İ±íÊ¾Îªcenter
+    //site three code,æ•°æ®æ‰€å±å¤–ç«™åº”ç”¨å”¯ä¸€æ ‡è¯†,é€šç”¨æ•°æ®è¡¨ç¤ºä¸ºcenter
     private String stc;
-    //²Ù×÷ÀàĞÍ,insert,update,delete
+    //æ“ä½œç±»å‹,insert,update,delete
     private String act;
-    //creation time,´´½¨Ê±¼ä
+    //creation time,åˆ›å»ºæ—¶é—´
     private String ct;
-    //last modified time,×î½üÒ»´Î²Ù×÷Ê±¼ä
+    //last modified time,æœ€è¿‘ä¸€æ¬¡æ“ä½œæ—¶é—´
     private String lmt;
-    //last offline modified time,×î½üÒ»´ÎÀëÏß²Ù×÷Ê±¼ä
+    //last offline modified time,æœ€è¿‘ä¸€æ¬¡ç¦»çº¿æ“ä½œæ—¶é—´
     private String omt;
-    //last modified by,×î½üÒ»´Î²Ù×÷ÓÃ»§uuid,0±íÊ¾ÎŞ²Ù×÷ÓÃ»§
+    //last modified by,æœ€è¿‘ä¸€æ¬¡æ“ä½œç”¨æˆ·uuid,0è¡¨ç¤ºæ— æ“ä½œç”¨æˆ·
     private String lmb;
-    //log uuid,²Ù×÷ÈÕÖ¾uuid,0±íÊ¾ÎŞ²Ù×÷ÈÕÖ¾
+    //log uuid,æ“ä½œæ—¥å¿—uuid,0è¡¨ç¤ºæ— æ“ä½œæ—¥å¿—
     private String lu;
-    //º½°àÎ¨Ò»±êÊ¶
+    //èˆªç­å”¯ä¸€æ ‡è¯†
     private String fu;
 
 

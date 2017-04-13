@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     private String ap;
     private String llt = "";
     private String lli = "";
-    private String pet;//password expire time 密码过期时间
+    private String pet;//password expire time 瀵嗙爜杩囨湡鏃堕棿
 
     public String getWid() {
         return wid;

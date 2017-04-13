@@ -33,11 +33,11 @@ public class BaseDAO {
     }
 
     /**
-     * Ìá¹©ÊÂÎñÖ§³ÖµÄ·½·¨
+     * æä¾›äº‹åŠ¡æ”¯æŒçš„æ–¹æ³•
      */
     public <T> T execute(TransactionalCallBack<T> transactionalCallBack) {
 
-        return transactionTemplate.execute(transactionalCallBack::doInTranscation);
+        return transactionTemplate.execute(transactionalCallBack::doInTransaction);
     }
 
     public <T> List<T> findAll(Class<T> cls) {
@@ -99,6 +99,6 @@ public class BaseDAO {
     }
 
     public static interface TransactionalCallBack<T> {
-        T doInTranscation(TransactionStatus status);
+        T doInTransaction(TransactionStatus status);
     }
 }

@@ -17,12 +17,12 @@ public class ReflectionUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtil.class);
 
     /**
-     * »ñÈ¡¶ÔÏóµÄ×Ö¶ÎÖµ£¬¸ù¾İgetter·½·¨»ñÈ¡£¬getter·½·¨Ãû±ØĞë¸ù¾İ¹æ·¶ÃüÁî£¬ÀıÈç£º×Ö¶ÎÃû£ºfirstName£»getter ·½·¨Ãû£ºgetFirstName <br>
-     * Èç¹û×Ö¶ÎÀàĞÍÊÇString£¬ÇÒ×Ö¶ÎÖµÊÇnull£¬Ôò·µ»Ø¿Õ¸ñ×Ö·û´®£¨" "£©
+     * è·å–å¯¹è±¡çš„å­—æ®µå€¼ï¼Œæ ¹æ®getteræ–¹æ³•è·å–ï¼Œgetteræ–¹æ³•åå¿…é¡»æ ¹æ®è§„èŒƒå‘½ä»¤ï¼Œä¾‹å¦‚ï¼šå­—æ®µåï¼šfirstNameï¼›getter æ–¹æ³•åï¼šgetFirstName <br>
+     * å¦‚æœå­—æ®µç±»å‹æ˜¯Stringï¼Œä¸”å­—æ®µå€¼æ˜¯nullï¼Œåˆ™è¿”å›ç©ºæ ¼å­—ç¬¦ä¸²ï¼ˆ" "ï¼‰
      *
-     * @param obj       ¶ÔÏó
-     * @param fieldName ×Ö¶ÎÃû
-     * @return ×Ö¶ÎÖµ
+     * @param obj       å¯¹è±¡
+     * @param fieldName å­—æ®µå
+     * @return å­—æ®µå€¼
      */
     public static Object getFieldValue(Object obj, String fieldName) {
 
@@ -135,7 +135,7 @@ public class ReflectionUtil {
                     Field field = getObjectField(key, cls);
                     if (field != null) {
                         field.set(t, determineValue(field.getType(), val));
-                    } else {//Èç¹ûfieldÊÇprivate£¬Ôò²éÑ¯setter·½·¨
+                    } else {//å¦‚æœfieldæ˜¯privateï¼Œåˆ™æŸ¥è¯¢setteræ–¹æ³•
                         Method setterMethod = findSetterMethod(key, cls);
                         if (setterMethod != null) {
                             setterMethod.invoke(t, determineValue(setterMethod.getParameterTypes()[0], val));
