@@ -46,7 +46,7 @@ public class BaseDAO {
             throw new RuntimeException("cannot get tablename from " + cls);
         }
 
-        return jdbcTemplate.queryForList("select * from " + tn, cls);
+        return jdbcTemplate.query("select * from " + tn, new BeanPropertyRowMapper<T>(cls));
     }
 
     public <T extends IdEntity> void save(T t) {

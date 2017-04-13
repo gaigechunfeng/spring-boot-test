@@ -9,36 +9,36 @@
     <version>1.0.1</version>
 
     <!-- Inherit defaults from Spring Boot -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.2.RELEASE</version>
-    </parent>
+    <!--<parent>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+    <!--<version>1.5.2.RELEASE</version>-->
+    <!--</parent>-->
 
     <properties>
         <shiro.version>1.4.0-RC2</shiro.version>
     </properties>
 
-    <!--<dependencyManagement>-->
-    <!--<dependencies>-->
-    <!--&lt;!&ndash; Override Spring Data release train provided by Spring Boot &ndash;&gt;-->
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.data</groupId>-->
-    <!--<artifactId>spring-data-releasetrain</artifactId>-->
-    <!--<version>Fowler-SR2</version>-->
-    <!--<scope>import</scope>-->
-    <!--<type>pom</type>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--&lt;!&ndash; Import dependency management from Spring Boot &ndash;&gt;-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-dependencies</artifactId>-->
-    <!--<version>1.5.2.RELEASE</version>-->
-    <!--<type>pom</type>-->
-    <!--<scope>import</scope>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
-    <!--</dependencyManagement>-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Override Spring Data release train provided by Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Fowler-SR2</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.2.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <!-- Add typical dependencies for a web application -->
     <dependencies>
@@ -114,21 +114,24 @@
             <resource>
                 <directory>${project.build.directory}/../config</directory>
             </resource>
+            <resource>
+                <directory>${project.build.directory}/../src/main/resources</directory>
+            </resource>
         </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<executions>-->
-                <!--<execution>-->
-                <!--<goals>-->
-                <!--<goal>repackage</goal>-->
-                <!--</goals>-->
-                <!--</execution>-->
-                <!--</executions>-->
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <!--<configuration>-->
+                    <!--<executable>true</executable>-->
+                <!--</configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

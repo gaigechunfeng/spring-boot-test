@@ -1,12 +1,14 @@
 package com.wk.boot;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.support.http.StatViewServlet;
 import com.wk.boot.client.Navigator;
 import com.wk.boot.service.IUserService;
 import com.wk.boot.util.Util;
 import com.wk.boot.web.ApiErrorPageRegistrar;
 import com.wk.boot.web.UserRealm;
 import com.wk.boot.web.filter.ApiFormFilter;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -19,6 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ErrorPageRegistrar;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -53,7 +56,7 @@ public class ApiConfiguration {
         return new TransactionTemplate(new DataSourceTransactionManager(dataSource));
     }
 
-    @Bean
+    @Bean(initMethod = "init", destroyMethod = "close")
     @ConfigurationProperties("api.datasource")
     public DataSource dataSource() {
         return new DruidDataSource();
@@ -109,25 +112,35 @@ public class ApiConfiguration {
         DefaultWebSecurityManager webSecurityManager = new DefaultWebSecurityManager();
         webSecurityManager.setRealm(userRealm);
 
-//        SecurityUtils.setSecurityManager(webSecurityManager);
+        SecurityUtils.setSecurityManager(webSecurityManager);
         return webSecurityManager;
     }
 
+//    @Bean
+//    @Qualifier("authc")
+//    public Filter authcFilter() {
+//
+//        return new ApiFormFilter();
+//    }
+
     @Bean(name = "shiroFilter")
-    public ShiroFilterFactoryBean shiroBean(@Autowired SecurityManager securityManager) {
+    public Object shiroBean(@Autowired SecurityManager securityManager) throws Exception {
 
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, String> filterChainDefinitionMap = new HashMap<>();
         filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/druid/*", "roles[admin]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         shiroFilterFactoryBean.setLoginUrl("/login");
 
         Map<String, Filter> filterMap = new HashMap<>();
         filterMap.put("authc", new ApiFormFilter());
+        shiroFilterFactoryBean.getFilters();
         shiroFilterFactoryBean.setFilters(filterMap);
 
+//        return shiroFilterFactoryBean.getObject();
         return shiroFilterFactoryBean;
     }
 
@@ -147,5 +160,15 @@ public class ApiConfiguration {
         bean.setUrlPatterns(urlPatterns);
 
         return bean;
+    }
+
+    @Bean
+    public ServletRegistrationBean druidServlet() {
+
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean();
+        servletRegistrationBean.setServlet(new StatViewServlet());
+        servletRegistrationBean.addUrlMappings("/druid/*");
+
+        return servletRegistrationBean;
     }
 }
