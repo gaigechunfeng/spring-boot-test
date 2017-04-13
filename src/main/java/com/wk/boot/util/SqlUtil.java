@@ -24,7 +24,7 @@ public class SqlUtil {
         fieldName.stream().filter(s -> !"id".equalsIgnoreCase(s)).forEach(s -> {
             sb1.append(",").append(s);
             sb2.append(",?");
-            params.add(BeanUtil.getFieldValue(t, s));
+            params.add(ReflectionUtil.getFieldValue(t, s));
         });
         if (sb1.length() > 0) sb1.delete(0, 1);
         if (sb2.length() > 0) sb2.delete(0, 1);
@@ -41,7 +41,7 @@ public class SqlUtil {
         for (Method m : ms) {
             String methodName = m.getName();
 
-            boolean isAccessLegal = BeanUtil.isAccessLegalMethod(m.getModifiers());
+            boolean isAccessLegal = ReflectionUtil.isAccessLegalMethod(m.getModifiers());
             if (!isAccessLegal) continue;
 
             Class type = m.getReturnType();
@@ -68,7 +68,7 @@ public class SqlUtil {
         StringBuilder sb1 = new StringBuilder();
         fieldName.stream().filter(s -> !"id".equalsIgnoreCase(s)).forEach(s -> {
             sb1.append(",").append(s).append("=?");
-            params.add(BeanUtil.getFieldValue(t, s));
+            params.add(ReflectionUtil.getFieldValue(t, s));
         });
         sb1.append(" where id=?");
         params.add(t.getId());

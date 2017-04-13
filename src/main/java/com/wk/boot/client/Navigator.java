@@ -2,9 +2,9 @@ package com.wk.boot.client;
 
 import com.wk.boot.constant.Error;
 import com.wk.boot.util.Msg;
+import com.wk.boot.util.ReflectionUtil;
 import com.wk.boot.util.Util;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,7 +14,6 @@ import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -123,7 +122,7 @@ public class Navigator {
             validateResponseMsg(msg, Map.class);
 
             //generate final result and return
-            return msg.getObj() == null || cls == null ? null : Util.transfer((Map<String, Object>) msg.getObj(), cls);
+            return msg.getObj() == null || cls == null ? null : ReflectionUtil.transfer((Map<String, Object>) msg.getObj(), cls);
         }
 
 //        private void parseResponseHeader(HttpHeaders httpHeaders) {
